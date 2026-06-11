@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./config/swagger');
+const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const studentRoutes = require('./routes/studentRoutes');
 const { errorHandler, notFound } = require('./middleware/errorMiddleware');
@@ -45,15 +46,16 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-const requireDatabase = (req, res, next) => {
-  if (mongoose.connection.readyState === 1) {
+const requireDatabase = async (req, res, next) => {
+  try {
+    await connectDB();
     return next();
+  } catch (error) {
+    return res.status(503).json({
+      success: false,
+      message: `Database connection failed: ${error.message}`,
+    });
   }
-
-  return res.status(503).json({
-    success: false,
-    message: 'Database is not connected yet. Check MONGO_MONGODB_URI and MongoDB status.',
-  });
 };
 
 app.use('/api/auth', requireDatabase);
