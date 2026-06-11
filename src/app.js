@@ -1,5 +1,7 @@
 const cors = require('cors');
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./config/swagger');
 const authRoutes = require('./routes/authRoutes');
 const studentRoutes = require('./routes/studentRoutes');
 const { errorHandler, notFound } = require('./middleware/errorMiddleware');
@@ -14,10 +16,16 @@ app.get('/', (req, res) => {
     success: true,
     message: 'Student Management API is running',
     data: {
-      docs: 'See README.md for API documentation',
+      docs: '/api-docs',
     },
   });
 });
+
+app.get('/api-docs.json', (req, res) => {
+  res.status(200).json(swaggerDocument);
+});
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({

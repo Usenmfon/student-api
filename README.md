@@ -71,6 +71,18 @@ Base URL:
 http://localhost:5000
 ```
 
+Swagger documentation:
+
+```text
+http://localhost:5000/api-docs
+```
+
+OpenAPI JSON:
+
+```text
+http://localhost:5000/api-docs.json
+```
+
 ## Health Check
 
 `GET /api/health`
