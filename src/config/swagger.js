@@ -8,6 +8,10 @@ const swaggerDocument = {
   },
   servers: [
     {
+      url: 'https://futurelabs-student-api.vercel.app',
+      description: 'Production server',
+    },
+    {
       url: 'http://localhost:5000',
       description: 'Local development server',
     },
