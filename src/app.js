@@ -1,5 +1,6 @@
 const cors = require('cors');
 const express = require('express');
+const mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./config/swagger');
 const authRoutes = require('./routes/authRoutes');
@@ -33,6 +34,10 @@ app.get('/api/health', (req, res) => {
     message: 'API health check passed',
     data: {
       status: 'ok',
+      database:
+        mongoose.connection.readyState === 1
+          ? 'connected'
+          : 'not connected',
       uptime: process.uptime(),
       timestamp: new Date().toISOString(),
       environment: process.env.NODE_ENV || 'development',
@@ -40,6 +45,19 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+const requireDatabase = (req, res, next) => {
+  if (mongoose.connection.readyState === 1) {
+    return next();
+  }
+
+  return res.status(503).json({
+    success: false,
+    message: 'Database is not connected yet. Check MONGO_MONGODB_URI and MongoDB status.',
+  });
+};
+
+app.use('/api/auth', requireDatabase);
+app.use('/api/students', requireDatabase);
 app.use('/api/auth', authRoutes);
 app.use('/api/students', studentRoutes);
 
