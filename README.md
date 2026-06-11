@@ -48,7 +48,7 @@ Create a `.env` file in the project root. You can copy `.env.example` and update
 
 ```env
 PORT=5000
-MONGO_URI=mongodb://127.0.0.1:27017/student_management_api
+MONGO_MONGODB_URI=mongodb://127.0.0.1:27017/student_management_api
 JWT_SECRET=your_jwt_secret
 JWT_EXPIRES_IN=7d
 ```
