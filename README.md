@@ -71,6 +71,27 @@ Base URL:
 http://localhost:5000
 ```
 
+## Health Check
+
+`GET /api/health`
+
+Use this endpoint to confirm the API server is running.
+
+Successful response:
+
+```json
+{
+  "success": true,
+  "message": "API health check passed",
+  "data": {
+    "status": "ok",
+    "uptime": 12.345,
+    "timestamp": "2026-06-11T10:00:00.000Z",
+    "environment": "development"
+  }
+}
+```
+
 ## Response Format
 
 Success response:
